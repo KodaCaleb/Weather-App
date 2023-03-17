@@ -9,7 +9,7 @@ To use this application, all you have to do is type a city into the search bar a
 
 ## Link to deployed site
 
-https://kodacaleb.github.io/Planner/
+https://kodacaleb.github.io/Weather-App/
 
 ## Link to github repo
 
