@@ -1,7 +1,7 @@
 // Global variables
 var searchHistory = [];
 var weatherApiRootUrl = 'https://api.openweathermap.org';
-var weatherApiKey = 'd91f911bcf2c0f925fb6535547a5ddc9';
+var weatherApiKey = 'ab47155e2b2b34926db83c4d2fbd0cd5';
 
 // DOM element references
 var searchForm = document.querySelector('#search-form');
@@ -194,7 +194,8 @@ function fetchWeather(location) {
 }
 
 function fetchCoords(search) {
-  var apiUrl = `${weatherApiRootUrl}/geo/1.0/direct?q=${search}&limit=5&appid=${weatherApiKey}`;
+  var encodedSearch = search.replace(/ /g, '+');
+  var apiUrl = `${weatherApiRootUrl}/geo/1.0/direct?q=${encodedSearch}&limit=5&appid=${weatherApiKey}`;
 
   fetch(apiUrl)
     .then(function (res) {
