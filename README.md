@@ -13,14 +13,12 @@ https://kodacaleb.github.io/Planner/
 
 ## Link to github repo
 
-https://github.com/KodaCaleb/Planner
+https://github.com/KodaCaleb/Weather-App
 
 ## screenshot of deployed application
 
-![Screenshot](./Assets/Planner%20SC.png)
+![Screenshot](./Assets/Screenshot.png)
 
-## credits
-N/A
 
 ## License
 please refer to license in repo
