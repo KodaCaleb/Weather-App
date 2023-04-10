@@ -1,38 +1,38 @@
-// Global variables
-var searchHistory = [];
-var weatherApiRootUrl = 'https://api.openweathermap.org';
-var weatherApiKey = 'ab47155e2b2b34926db83c4d2fbd0cd5';
+// Select elements from DOM
+const searchForm = document.querySelector('#search-form');
+const searchInput = document.querySelector('#search-input');
+const dayContainer = document.querySelector('#today');
+const forecastContainer = document.querySelector('#forecast');
+const historyContainer  = document.querySelector('#history');
 
-// DOM element references
-var searchForm = document.querySelector('#search-form');
-var searchInput = document.querySelector('#search-input');
-var todayContainer = document.querySelector('#today');
-var forecastContainer = document.querySelector('#forecast');
-var searchHistoryContainer = document.querySelector('#history');
+// define global variables
+let searchHistory = [];
+let weatherApiRootUrl = 'https://api.openweathermap.org';
+let weatherApiKey = 'ab47155e2b2b34926db83c4d2fbd0cd5';
 
 // Add timezone plugins to day.js
 dayjs.extend(window.dayjs_plugin_utc);
 dayjs.extend(window.dayjs_plugin_timezone);
 
-// Function to display the search history list.
+// Function to display the search history
 function renderSearchHistory() {
-  searchHistoryContainer.innerHTML = '';
+  historyContainer .innerHTML = '';
 
-  // Start at end of history array and count down to show the most recent at the top.
-  for (var i = searchHistory.length - 1; i >= 0; i--) {
+  // Loop through the search history array from the end and create a button for each item
+  for (let i = searchHistory.length - 1; i >= 0; i--) {
     var btn = document.createElement('button');
     btn.setAttribute('type', 'button');
     btn.setAttribute('aria-controls', 'today forecast');
     btn.classList.add('history-btn', 'btn-history');
 
-    // `data-search` allows access to city name when click handler is invoked
+   // Set the data-search attribute to the city name
     btn.setAttribute('data-search', searchHistory[i]);
     btn.textContent = searchHistory[i];
-    searchHistoryContainer.append(btn);
+    historyContainer .append(btn);
   }
 }
 
-// Function to update history in local storage then updates displayed history.
+// Function to add a search term to the search history array and display the updated list
 function appendToHistory(search) {
   // If there is no search term return the function
   if (searchHistory.indexOf(search) !== -1) {
@@ -45,8 +45,8 @@ function appendToHistory(search) {
 }
 
 // Function to get search history from local storage
-function initSearchHistory() {
-  var storedHistory = localStorage.getItem('search-history');
+function startSearchHistory() {
+  let storedHistory = localStorage.getItem('search-history');
   if (storedHistory) {
     searchHistory = JSON.parse(storedHistory);
   }
@@ -55,21 +55,21 @@ function initSearchHistory() {
 
 // Function to display the current weather data fetched from OpenWeather api.
 function renderCurrentWeather(city, weather) {
-  var date = dayjs().format('M/D/YYYY');
-  // Store response data from our fetch request in variables
-  var tempF = weather.main.temp;
-  var windMph = weather.wind.speed;
-  var humidity = weather.main.humidity;
-  var iconUrl = `https://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
-  var iconDescription = weather.weather[0].description || weather[0].main;
+  let date = dayjs().format('M/D/YYYY');
+  // Store the response data from the fetch request in variables
+  let tempF = weather.main.temp;
+  let windMph = weather.wind.speed;
+  let humidity = weather.main.humidity;
+  let iconUrl = `https://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
+  let iconDescription = weather.weather[0].description || weather[0].main;
 
-  var card = document.createElement('div');
-  var cardBody = document.createElement('div');
-  var heading = document.createElement('h2');
-  var weatherIcon = document.createElement('img');
-  var tempEl = document.createElement('p');
-  var windEl = document.createElement('p');
-  var humidityEl = document.createElement('p');
+  let card = document.createElement('div');
+  let cardBody = document.createElement('div');
+  let heading = document.createElement('h2');
+  let weatherIcon = document.createElement('img');
+  let tempEl = document.createElement('p');
+  let windEl = document.createElement('p');
+  let humidityEl = document.createElement('p');
 
   card.setAttribute('class', 'card');
   cardBody.setAttribute('class', 'card-body');
@@ -90,29 +90,29 @@ function renderCurrentWeather(city, weather) {
   humidityEl.textContent = `Humidity: ${humidity} %`;
   cardBody.append(heading, tempEl, windEl, humidityEl);
 
-  todayContainer.innerHTML = '';
-  todayContainer.append(card);
+  dayContainer.innerHTML = '';
+  dayContainer.append(card);
 }
 
-// Function to display a forecast card given an object from open weather api
+// Function to display forecast card given an object from api
 // daily forecast.
 function renderForecastCard(forecast) {
   // variables for data from api
-  var iconUrl = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
-  var iconDescription = forecast.weather[0].description;
-  var tempF = forecast.main.temp;
-  var humidity = forecast.main.humidity;
-  var windMph = forecast.wind.speed;
+  let iconUrl = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
+  let iconDescription = forecast.weather[0].description;
+  let tempF = forecast.main.temp;
+  let humidity = forecast.main.humidity;
+  let windMph = forecast.wind.speed;
 
   // Create elements for a card
-  var col = document.createElement('div');
-  var card = document.createElement('div');
-  var cardBody = document.createElement('div');
-  var cardTitle = document.createElement('h5');
-  var weatherIcon = document.createElement('img');
-  var tempEl = document.createElement('p');
-  var windEl = document.createElement('p');
-  var humidityEl = document.createElement('p');
+  let col = document.createElement('div');
+  let card = document.createElement('div');
+  let cardBody = document.createElement('div');
+  let cardTitle = document.createElement('h5');
+  let weatherIcon = document.createElement('img');
+  let tempEl = document.createElement('p');
+  let windEl = document.createElement('p');
+  let humidityEl = document.createElement('p');
 
   col.append(card);
   card.append(cardBody);
@@ -141,11 +141,11 @@ function renderForecastCard(forecast) {
 // Function to display 5 day forecast.
 function renderForecast(dailyForecast) {
   // Create unix timestamps for start and end of 5 day forecast
-  var startDt = dayjs().add(1, 'day').startOf('day').unix();
-  var endDt = dayjs().add(6, 'day').startOf('day').unix();
+  let startDt = dayjs().add(1, 'day').startOf('day').unix();
+  let endDt = dayjs().add(6, 'day').startOf('day').unix();
 
-  var headingCol = document.createElement('div');
-  var heading = document.createElement('h4');
+  let headingCol = document.createElement('div');
+  let heading = document.createElement('h4');
 
   headingCol.setAttribute('class', 'col-12');
   heading.textContent = '5-Day Forecast:';
@@ -154,7 +154,7 @@ function renderForecast(dailyForecast) {
   forecastContainer.innerHTML = '';
   forecastContainer.append(headingCol);
 
-  for (var i = 0; i < dailyForecast.length; i++) {
+  for (let i = 0; i < dailyForecast.length; i++) {
 
     // First filters through all of the data and returns only data that falls between one day after the current data and up to 5 days later.
     if (dailyForecast[i].dt >= startDt && dailyForecast[i].dt < endDt) {
@@ -172,14 +172,13 @@ function renderItems(city, data) {
   renderForecast(data.list);
 }
 
-// Fetches weather data for given location from the Weather Geolocation
-// endpoint; then, calls functions to display current and forecast weather data.
+// Fetches weather data for a location from the OpenWeather API, then calls functions to display the current and 5-day forecast.
 function fetchWeather(location) {
-  var { lat } = location;
-  var { lon } = location;
-  var city = location.name;
+  let { lat } = location;
+  let { lon } = location;
+  let city = location.name;
 
-  var apiUrl = `${weatherApiRootUrl}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${weatherApiKey}`;
+  let apiUrl = `${weatherApiRootUrl}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${weatherApiKey}`;
 
   fetch(apiUrl)
     .then(function (res) {
@@ -194,8 +193,8 @@ function fetchWeather(location) {
 }
 
 function fetchCoords(search) {
-  var encodedSearch = search.replace(/ /g, '+');
-  var apiUrl = `${weatherApiRootUrl}/geo/1.0/direct?q=${encodedSearch}&limit=5&appid=${weatherApiKey}`;
+  let encodedSearch = search.replace(/ /g, '+');
+  let apiUrl = `${weatherApiRootUrl}/geo/1.0/direct?q=${encodedSearch}&limit=5&appid=${weatherApiKey}`;
 
   fetch(apiUrl)
     .then(function (res) {
@@ -221,7 +220,7 @@ function handleSearchFormSubmit(e) {
   }
 
   e.preventDefault();
-  var search = searchInput.value.trim();
+  let search = searchInput.value.trim();
   fetchCoords(search);
   searchInput.value = '';
 }
@@ -232,11 +231,11 @@ function handleSearchHistoryClick(e) {
     return;
   }
 
-  var btn = e.target;
-  var search = btn.getAttribute('data-search');
+  let btn = e.target;
+  let search = btn.getAttribute('data-search');
   fetchCoords(search);
 }
 
-initSearchHistory();
+startSearchHistory();
 searchForm.addEventListener('submit', handleSearchFormSubmit);
-searchHistoryContainer.addEventListener('click', handleSearchHistoryClick);
+historyContainer .addEventListener('click', handleSearchHistoryClick);
